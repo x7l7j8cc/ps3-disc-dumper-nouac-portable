@@ -1,4 +1,5 @@
-All Credits goes to [13xforever](https://github.com/13xforever) for the Tool. I only done some modification to Disable the UAC Checks and to start in Portable Mode, nothing more.
+All Credits goes to [13xforever](https://github.com/13xforever) for the Tool.\
+I only done some Modification to `Disable the UAC Checks` and to start in `Portable Mode`, nothing more.
 
 PS3 Disc Dumper
 ===============
