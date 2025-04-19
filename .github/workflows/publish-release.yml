@@ -113,6 +113,8 @@ jobs:
           commit: '${{ github.sha }}'
           tag: 'v${{ env.version_full }}'
           release_name: "UAC Disabled and Full Portable Mode v${{ env.version_full }}"
+          name: "N-UAC Disabled and Full Portable Mode v${{ env.version_full }}"
+          release[name]: "R[N]UAC Disabled and Full Portable Mode v${{ env.version_full }}"
           body: 'Changelog is the same as the Official one... Plus, UAC Disabled and Full Portable Mode.'
           draft: true
           prerelease: false
