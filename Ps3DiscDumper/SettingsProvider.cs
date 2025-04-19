@@ -19,7 +19,8 @@ public static partial class SettingsProvider
         try
         {
             Log.Info("Loading settings…");
-            settingsFolder = Path.Combine(Environment.GetFolderPath(SpecialFolder.LocalApplicationData), "ps3-disc-dumper");
+            settingsFolder = Directory.GetCurrentDirectory();
+                //Path.Combine(Environment.GetFolderPath(SpecialFolder.LocalApplicationData), "ps3-disc-dumper");
             settingsPath = Path.Combine(settingsFolder, "settings.json");
             if (File.Exists(settingsPath))
             {
