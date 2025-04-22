@@ -16,10 +16,10 @@ public struct Settings
     [JsonIgnore] public static readonly string[] BdmvFolders = ["BDMV", "AACS", "CERTIFICATE"];
     [JsonIgnore] public static readonly string[] Ps3UpdateFolder = ["PS3_UPDATE"];
 
-    public string OutputDir { get; set; } = Path.Combine(".", "dumps");
-        //".";
-    public string IrdDir { get; set; } = Path.Combine(".", "ird");
-        //Path.Combine(Environment.GetFolderPath(SpecialFolder.ApplicationData) ,"ps3-iso-dumper", "ird");
+    //Both Checks if portable.txt file exists, and if it is Activate PortableMode otherwise StandardMode
+    public string OutputDir { get; set; } = (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "portable.txt"))) ? Path.Combine(".", "dumps") : ".";
+    public string IrdDir { get; set; } =  (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "portable.txt"))) ? Path.Combine(".", "ird") : Path.Combine(Environment.GetFolderPath(SpecialFolder.ApplicationData), "ps3-iso-dumper", "ird");
+    
     public string DumpNameTemplate { get; set; } = DefaultPattern;
     public bool ShowDetails { get; set; } = true;
     public bool EnableTransparency { get; set; } = true;
