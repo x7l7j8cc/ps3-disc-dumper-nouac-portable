@@ -19,8 +19,10 @@ public static partial class SettingsProvider
         try
         {
             Log.Info("Loading settings…");
-            settingsFolder = Directory.GetCurrentDirectory();
-                //Path.Combine(Environment.GetFolderPath(SpecialFolder.LocalApplicationData), "ps3-disc-dumper");
+
+            //Checks if portable.txt file exists, and if it is Activate PortableMode otherwise StandardMode
+            settingsFolder = (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "portable.txt"))) ? Directory.GetCurrentDirectory() : Path.Combine(Environment.GetFolderPath(SpecialFolder.LocalApplicationData), "ps3-disc-dumper");
+            
             settingsPath = Path.Combine(settingsFolder, "settings.json");
             if (File.Exists(settingsPath))
             {
