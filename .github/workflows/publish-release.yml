@@ -112,8 +112,8 @@ jobs:
         with:
           commit: '${{ github.sha }}'
           tag: 'v${{ env.version_full }}'
-          name: "UAC Disabled and Full Portable Mode v${{ env.version_full }}"
-          body: 'Changelog is the same as the Official one... Plus, UAC Disabled and Full Portable Mode.'
+          name: "Ps3DiscDumper NoUAC + PortableMode v${{ env.version_full }}"
+          body: 'Changelog is the same as the Official one, so...\n\n\nPlus:\n- UAC Check Disabled\n- Checks for "portable.txt" file. If found it enters in Portable Mode, if not it behaves like Always.\n- On Startup, if "portable.txt" file is found, it automatically Set ALL Default Folder to where the EXE is'
           draft: true
           prerelease: false
           allowUpdates: true
