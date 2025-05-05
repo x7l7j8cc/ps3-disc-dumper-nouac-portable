@@ -56,7 +56,7 @@ public partial class SettingsViewModel: ViewModelBase
     public string LogPathPreview => FormatPathPreview(Log.LogPath);
     public string DumperVersion => Dumper.Version;
     public string CurrentYear => DateTime.Now.Year.ToString();
-    public static string ProjectUrl => "https://github.com/13xforever/ps3-disc-dumper";
+    public static string ProjectUrl => "https://github.com/x7l7j8cc/ps3-disc-dumper-nouac-portable";
     public static string SubmitIssueUrl => $"{ProjectUrl}/issues/new/choose";
     public static string WikiUrlBase => $"{ProjectUrl}/wiki/";
     public static string HybridDiscWikiLink => $"{WikiUrlBase}Hybrid-discs";
