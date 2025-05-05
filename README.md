@@ -1,3 +1,6 @@
+All Credits goes to [13xforever](https://github.com/13xforever) for the Tool.\
+I only done some Modification to `Disable the UAC Check`, Start in `Full Portable Mode` if `portable.txt` is found, and Changing the `Repository's Url` for Updating the App.
+
 PS3 Disc Dumper
 ===============
 This is a small utility to make decrypted copies of the PS3 game discs, suitable for use in emulators.
