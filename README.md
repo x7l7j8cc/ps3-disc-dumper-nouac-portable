@@ -12,7 +12,7 @@ Requirements
 * Compatible blu-ray drive
 * Disc must have decryption key, either in redump database or in the IRD Library
 * For binary release you might need to install .NET prerequisites
-  * See `Supported OS versions` and `Dependencies` sections in [documentation](https://learn.microsoft.com/en-us/dotnet/core/install/)
+  * See `Supported OS versions` and `Dependencies` sections in [documentation](https://learn.microsoft.com/en-us/dotnet/core/install/windows?tabs=net60#dependencies)
 
 How to use
 ==========
@@ -48,7 +48,7 @@ Fedora 39
 
 Building
 ========
-* To compile the solution, you will need to have [.NET 9.0 SDK](https://www.microsoft.com/net/download) installed on your machine.
+* To compile the solution, you will need to have [.NET 8.0 SDK](https://www.microsoft.com/net/download) installed on your machine.
 * It is recommended to use [JetBrains Raider](https://www.jetbrains.com/rider/), [Visual Studio](https://visualstudio.microsoft.com/), or [VS Code](https://code.visualstudio.com/) for development.
   * On Linux select the Linux configuration to prevent various issues due to Windows-specific dependencies.
   * You can build for both Windows and Linux on Windows (you can test Linux build with WSL2 or with a Linux VM).
