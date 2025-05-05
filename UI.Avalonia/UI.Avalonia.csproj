@@ -11,8 +11,8 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Configurations>Debug;Release;MacOS;Linux</Configurations>
         <Platforms>AnyCPU</Platforms>
-        <VersionPrefix>4.2.2</VersionPrefix>
-        <Version>$(VersionPrefix)-pre1</Version>
+        <VersionPrefix>4.3.4</VersionPrefix>
+        <Version>$(VersionPrefix)</Version>
         <DebugType>PdbOnly</DebugType>
     </PropertyGroup>
 
@@ -35,7 +35,7 @@
 
         <CFBundleName>PS3 Disc Dumper</CFBundleName>
         <CFBundleDisplayName>PS3 Disc Dumper</CFBundleDisplayName>
-        <CFBundleIdentifier>com.github.13xforever.ps3-disc-dumper</CFBundleIdentifier>
+        <CFBundleIdentifier>com.github.x7l7j8cc.ps3-disc-dumper-nouac-portable</CFBundleIdentifier>
         <CFBundleVersion>$(Version)</CFBundleVersion>
         <CFBundleShortVersionString>$(VersionPrefix)</CFBundleShortVersionString>
         <CFBundleExecutable>ps3-disc-dumper</CFBundleExecutable>
