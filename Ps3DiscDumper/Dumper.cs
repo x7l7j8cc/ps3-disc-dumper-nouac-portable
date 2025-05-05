@@ -787,7 +787,7 @@ public partial class Dumper: IDisposable
             var curVerStr = curVerMatch.Groups["ver"].Value;
             var curVerPre = curVerMatch.Groups["pre"].Value;
             client.DefaultRequestHeaders.UserAgent.Add(new("PS3DiscDumper", curVerStr));
-            var responseJson = await client.GetStringAsync("https://api.github.com/repos/13xforever/ps3-disc-dumper/releases").ConfigureAwait(false);
+            var responseJson = await client.GetStringAsync("https://api.github.com/repos/x7l7j8cc/ps3-disc-dumper-nouac-portable/releases").ConfigureAwait(false);
             var releaseList = JsonSerializer.Deserialize(responseJson, GithubReleaseSerializer.Default.GitHubReleaseInfoArray)?
                 .OrderByDescending(r => System.Version.TryParse(r.TagName.TrimStart('v'), out var v) ? v : null)
                 .ToList();
