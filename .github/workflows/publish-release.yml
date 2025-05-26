@@ -106,30 +106,32 @@ jobs:
             zip -vr9 "$artifact_name" 'PS3 Disc Dumper.app/' -x '*.DS_Store'
           }
           Write-Output "artifact_name=$artifact_name" >> $env:GITHUB_ENV
-      - name: 'Create or update GitHub release draft'
+      - name: 'Create or update GitHub release'
         if: ${{ inputs.version }}
         uses: ncipollo/release-action@v1
         with:
           commit: '${{ github.sha }}'
           tag: 'v${{ env.version_full }}'
+          name: "Ps3DiscDumper NoUAC + PortableMode v${{ env.version_full }}"
+          body: 'Changelog is the same as the Official one, so...\n\n\nPlus:\n- UAC Check Disabled\n- Checks for "portable.txt" file. If found it enters in Portable Mode, if not it behaves like Always.\n- On Startup, if "portable.txt" file is found, it automatically Set ALL Default Folder to where the EXE is'
           draft: true
-          prerelease: true
+          prerelease: false
           allowUpdates: true
-          generateReleaseNotes: true
+          generateReleaseNotes: false
           artifacts: 'distrib/ps3-disc-dumper_*.zip'
           artifactContentType: application/zip
           replacesArtifacts: true
           omitBodyDuringUpdate: true
           omitNameDuringUpdate: true
           omitPrereleaseDuringUpdate: true
-      - name: 'Create or update GitHub custom release draft'
+      - name: 'Create or update GitHub custom release'
         if: ${{ github.event_name == 'push' }}
         uses: ncipollo/release-action@v1
         with:
           draft: true
-          prerelease: true
+          prerelease: false
           allowUpdates: true
-          generateReleaseNotes: true
+          generateReleaseNotes: false
           artifacts: 'distrib/ps3-disc-dumper_*.zip'
           artifactContentType: application/zip
           replacesArtifacts: true
