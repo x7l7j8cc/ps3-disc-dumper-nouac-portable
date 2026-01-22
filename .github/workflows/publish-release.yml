@@ -1,4 +1,5 @@
 name: 'Publish Release'
+
 on:
   workflow_dispatch:
     inputs:
@@ -6,59 +7,69 @@ on:
         description: 'Version tag in format x.y.z[-pre]'
         required: true
         type: string
+        
 env:
   dotnet_version: '10.0'
+  
 jobs:
   publish:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-latest]
+        #, ubuntu-latest, macos-latest
         include:
           - os: windows-latest
             configuration: Release
             target: '-windows'
             rid: win-x64
             command_extra: ''
-          - os: ubuntu-latest
-            configuration: Linux
-            target: ''
-            rid: linux-x64
-            command_extra: ''
-          - os: macos-latest
-            configuration: MacOS
-            target: ''
-            rid: 'osx-arm64'
-            command_extra: '-t:BundleApp'
+          #- os: ubuntu-latest
+            #configuration: Linux
+            #target: ''
+            #rid: linux-x64
+            #command_extra: ''
+          #- os: macos-latest
+            #configuration: MacOS
+            #target: ''
+            #rid: 'osx-arm64'
+            #command_extra: '-t:BundleApp'
+            
     runs-on: '${{ matrix.os }}'
+    
     env:
       version_full: '${{ github.ref_name }}'
       version_short: '${{ github.ref_name }}'
       artifact_name: 'ps3-disc-dumper_vX.Y.Z.zip'
+      
     permissions:
       contents: write
+      
     steps:
       - uses: actions/checkout@v4
-      - name: 'Replace full version with custom input value'
+      - name: 'Replace Full Version with Custom Input Value'
         if: '${{ inputs.version }}'
         shell: pwsh
         run: 'Write-Output "version_full=${{ inputs.version }}" >> $env:GITHUB_ENV'
-      - name: 'Fix full version format'
+        
+      - name: 'Fix Full Version Format'
         shell: pwsh
         run: |
           $ver = '${{ env.version_full }}'.TrimStart('v')
           Write-Output "version_full=$ver" >> $env:GITHUB_ENV
-      - name: 'Generate short version'
+          
+      - name: 'Generate Short-Version'
         shell: pwsh
         run: |
           $ver = [SemVer]'${{ env.version_full }}'
           $short_ver = "$($ver.Major).$($ver.Minor).$($ver.Patch)"
           Write-Host "Got $short_ver from ${{ env.version_full }}"
           Write-Output "version_short=$short_ver" >> $env:GITHUB_ENV
+          
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '${{ env.dotnet_version }}.x'
-      - name: "Download current redump snapshot"
+      - name: "Download Current ReDump Snapshot"
         shell: pwsh
         run: |
           $uri = 'http://redump.org/keys/ps3/'
@@ -66,7 +77,8 @@ jobs:
           $fname = $response.Headers['Content-Disposition'].Split('=', 2)[1].Trim('"')
           Invoke-WebRequest -Uri $uri -OutFile "$fname"
           Write-Host "Got $fname"
-      - name: 'Build release'
+          
+      - name: 'Build Release'
         run: >-
           dotnet publish
           -v:q
@@ -83,7 +95,8 @@ jobs:
           -p:VersionPrefix=${{ env.version_short }}
           -p:Version=${{ env.version_full }}
           ${{ matrix.command_extra }}
-      - name: 'Make artifact'
+          
+      - name: 'Make Artifact'
         shell: pwsh
         run: |
           cd distrib
@@ -94,26 +107,27 @@ jobs:
             $artifact_name = "ps3-disc-dumper_windows_v${{ env.version_full }}.zip"
             Compress-Archive -LiteralPath ps3-disc-dumper.exe -DestinationPath "$artifact_name" -CompressionLevel Optimal -Force
           }
-          elseif ($IsLinux) # Compress-Archive does not preserve rwx attributes, so use zip on *nix
-          {
-            $artifact_name = "ps3-disc-dumper_linux_v${{ env.version_full }}.zip"
-            zip -v9 "$artifact_name" ps3-disc-dumper
-          }
-          elseif ($IsMacOs)
-          {
-            $artifact_name = "ps3-disc-dumper_macos_v${{ env.version_full }}.zip"
-            codesign --deep -fs - 'PS3 Disc Dumper.app'
-            zip -vr9 "$artifact_name" 'PS3 Disc Dumper.app/' -x '*.DS_Store'
-          }
           Write-Output "artifact_name=$artifact_name" >> $env:GITHUB_ENV
-      - name: 'Create or update GitHub release'
+        #elseif ($IsLinux) # Compress-Archive does not preserve rwx attributes, so use zip on *nix
+        #{
+          #$artifact_name = "ps3-disc-dumper_linux_v${{ env.version_full }}.zip"
+          #zip -v9 "$artifact_name" ps3-disc-dumper
+        #}
+        #elseif ($IsMacOs)
+        #{
+          #$artifact_name = "ps3-disc-dumper_macos_v${{ env.version_full }}.zip"
+          #codesign --deep -fs - 'PS3 Disc Dumper.app'
+          #zip -vr9 "$artifact_name" 'PS3 Disc Dumper.app/' -x '*.DS_Store'
+        #}
+          
+      - name: 'Create GitHub Release'
         if: ${{ inputs.version }}
         uses: ncipollo/release-action@v1
         with:
           commit: '${{ github.sha }}'
           tag: 'v${{ env.version_full }}'
-          name: "Ps3DiscDumper NoUAC + PortableMode v${{ env.version_full }}"
-          body: 'Changelog is the same as the Official one, so...\n\n\nPlus:\n- UAC Check Disabled\n- Checks for "portable.txt" file. If found it enters in Portable Mode, if not it behaves like Always.\n- On Startup, if "portable.txt" file is found, it automatically Set ALL Default Folder to where the EXE is'
+          name: "Ps3DiscDumper v${{ env.version_full }}"
+          body: "Changelog is the same as the Official one, so...\n- TTTTT\n\nPlus:\n- UAC Check Disabled\n- Portable Mode: On Startup, Checks for the \"portable.txt\" file. If found, enters in Portable Mode (and sets all Folder to where the EXE is), if not it behaves like Always."
           draft: true
           prerelease: false
           allowUpdates: true
@@ -124,19 +138,3 @@ jobs:
           omitBodyDuringUpdate: true
           omitNameDuringUpdate: true
           omitPrereleaseDuringUpdate: true
-      - name: 'Create or update GitHub custom release'
-        if: ${{ github.event_name == 'push' }}
-        uses: ncipollo/release-action@v1
-        with:
-          draft: true
-          prerelease: false
-          allowUpdates: true
-          generateReleaseNotes: false
-          artifacts: 'distrib/ps3-disc-dumper_*.zip'
-          artifactContentType: application/zip
-          replacesArtifacts: true
-          omitBodyDuringUpdate: true
-          omitNameDuringUpdate: true
-          omitPrereleaseDuringUpdate: true
-
-
